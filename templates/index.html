@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>天気予報アプリ</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h3 class="text-center mb-3">天気予報</h3>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <!-- <div class="alert alert-danger"> -->
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success'}}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        <!-- </div> -->
+                        {% endif %}
+                        {% endwith %}
+                        <form action="/" method="post">
+                            <div class="mb-3">
+                                <input type="text" name="city" id="" class="form-control">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Get Weather</button>
+                            </div>
+                        </form>
+
+                        {% if weather_data %}
+                        <div class="text-center mt-4">
+                            <h4>{{ weather_data['name'] }}</h4>
+                            <p>{{ weather_data['weather'][0]['description'] }} |
+                                {{ weather_data['main']['temp']| round() }}°C</p>
+                            <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" alt="天気アイコン">
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
